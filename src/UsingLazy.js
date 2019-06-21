@@ -1,5 +1,5 @@
 import React from 'react'
 
-const UsingLazy = (props) => 'UsingLazy'
+const UsingLazy = (props) => props.type
 
 export default UsingLazy
