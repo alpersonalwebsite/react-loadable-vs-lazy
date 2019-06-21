@@ -1,7 +1,5 @@
 import React from 'react'
 
-const UsingReactLoadable = () => {
-    return 'Hello'
-}
+const UsingReactLoadable = (props) => 'UsingReactLoadable'
 
 export default UsingReactLoadable
