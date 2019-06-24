@@ -7,14 +7,13 @@ function loading() {
 }
 
 
-
 const LoadUsingReactLoadable = Loadable({
   loader: async () => {
     let timer = await new Promise(resolve => setTimeout(resolve, 7000));
     clearTimeout(timer);
     return import('./UsingReactLoadable');
   },
-  //loading: loading iif you like it more
+  //loading: loading if you like it more
   loading
 })
 
