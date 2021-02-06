@@ -8,12 +8,12 @@ This is an easy, basic and raw (no styles attached) example of **HOW to** dynami
 
 ## Installation
 ```
-yarn install
+npm install
 ```
 
 ## Running the dev server
 ```
-yarn start
+npm start
 ```
 
 ## Description
