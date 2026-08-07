@@ -1,36 +1,23 @@
-version: 2
+version: 2.1
+
 jobs:
   build:
     docker:
-      - image: node:11.10.1
-    environment:
-      CI: false
-
+      # Pinned. `node:lts` floats, so the image changed under a project frozen on
+      # Create React App 3 every time a new LTS shipped. Create React App 3 also needs
+      # a Node below 17: webpack 4 asks OpenSSL for MD4, which fails on 17+ with
+      # ERR_OSSL_EVP_UNSUPPORTED.
+      - image: cimg/node:12.22
     steps:
       - checkout
-
-      - run: npm install
-      # run: npm run test
+      # npm ci, not npm install: exactly what package-lock.json pins.
+      - run: npm ci
+      # This repo had no lint script at all, alone among its siblings.
+      - run: npm run lint
+      - run:
+          name: Test
+          command: npm test -- --watchAll=false
+      # CI deliberately NOT set to false: Create React App treats warnings as errors
+      # when it is set, and the three "'React' is defined but never used" warnings that
+      # setting hid are exactly the sort of thing this catches.
       - run: npm run build
-
-  deploy:    
-    docker:
-      - image: buildpack-deps:trusty
-    steps:  
-      - checkout
-      - run: 
-          name: Deploy to Heroku
-          command: |
-            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
-
-workflows:
-  version: 2
-  build-and-deploy: 
-    jobs:
-      - build
-      - deploy:
-          requires:
-            - build
-          filters:
-            branches:
-              only: master
